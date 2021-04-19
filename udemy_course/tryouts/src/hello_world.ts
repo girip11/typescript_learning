@@ -1,10 +1,10 @@
 //console.log("Hello World");
 
 function sayHello(name: String) {
-  console.log("Hello " + name);
+  console.log('Hello ' + name);
 }
 
-sayHello("John");
+sayHello('John');
 
 // passing incorrect type throws compilation error
-sayHello("Jane");
+sayHello('Jane');

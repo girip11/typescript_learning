@@ -11,5 +11,5 @@ function printName(stark: Stark) {
   console.log(stark.age);
 }
 
-printName({ name: "Tony Stark", age: 25 });
-printName({ name: "Tony Stark Sr", age: 60, gender: "Male" });
+printName({ name: 'Tony Stark', age: 25 });
+printName({ name: 'Tony Stark Sr', age: 60, gender: 'Male' });

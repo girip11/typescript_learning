@@ -11,10 +11,10 @@ class Person {
   }
 
   greet(personName: string) {
-    console.log("Hello " + personName);
+    console.log('Hello ' + personName);
   }
 }
 
-let person1 = new Person("John Doe");
+let person1 = new Person('John Doe');
 console.log(person1.name);
-person1.greet("Jane");
+person1.greet('Jane');

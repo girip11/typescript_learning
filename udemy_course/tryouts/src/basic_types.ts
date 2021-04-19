@@ -4,7 +4,7 @@ let isCorrect2: Boolean = false;
 let count: number = 1;
 let count2: Number = 1;
 
-let planets: Array<string> = ["Mercury", "Venus"];
+let planets: Array<string> = ['Mercury', 'Venus'];
 
 enum Planets {
   Mercury,
