@@ -19,3 +19,4 @@ function getPlanetName(planetPosition: number): String {
 }
 
 console.log(getPlanetName(1));
+planets.forEach((s: string) => console.log(s));
