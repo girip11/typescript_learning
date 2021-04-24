@@ -177,3 +177,133 @@ let numbers = [...simpleIterable];
 let [first, second, ...rest] = simpleIterable;
 console.log(first, second, rest);
 ```
+
+## Call signatures
+
+- Function's type is referred to as call signature. We don't want to explicitly type a function object as `Function`.
+- With call signatures, we can get the typechecking to do its magic.
+- Call signatures resemble arrow functions syntax.
+
+```Typescript
+function sum(a: number, b: number): number {
+return a + b
+}
+
+//The function signature of sum is
+type Sum = (a: number, b: number) => number; //shorthand notation
+
+// This full call signature is used when overloading
+// the function.
+type SumFullCallSig = {
+ // we cannot use arrow notation in full call signature
+  (a: number, b: number): number;
+  // or
+  // function (a: number, b: number): number;
+}
+
+let sumInAVariable: Sum = sum;
+sumInAVariable(1, 1)
+```
+
+> Function call signatures can express parameter types, `this` types, return types, rest types, and optional types, and they cannot express default values (since a default value is a value, not a type).
+
+```Typescript
+type Greet = (name: string) => string;
+type Log = (message: string, userId?: string) => void;
+type SumVariadicSafe = (...numbers: number[]) => number;
+```
+
+**NOTE**- When functions have default parameters in their definitions, the call signature should represent them as optional parameter, since we can't have values in the call signatures.
+
+## Contextual typing
+
+- Ability to infer types from the call signatures
+
+- This applies for higher order functions as well. Because higher order functions declare the function signature they expect, during call we can create arrow functions without explicit types.
+
+```Typescript
+type Greet = (name: string) => string;
+
+// Notice here we don't type the parameters of the
+// arrow function, but types are inferred from Greet.
+let someGreetFunc: Greet = (name) => `Hi, ${name}`;
+```
+
+## Overloaded function types
+
+```Typescript
+// overloading
+type Reserve = {
+  // two way trip
+  (from: Date, to: Date, destination: string): Reservation;
+
+  // oneway trip
+  (from: Date, destination: string): Reservation;
+}
+
+// In this syntax you add the function keyword
+type ReserveWithFunctionSyntax = {
+  // two way trip
+  function (from: Date, to: Date, destination: string): Reservation;
+
+  // oneway trip
+  function (from: Date, destination: string): Reservation;
+}
+
+// we have to explicitly type the parameters
+// no contextual typing when overloading
+let reserve: Reserve = (
+    from: Date,
+    toOrDestination: Date | string,
+    destination?: string
+) => {
+// ...
+}
+```
+
+> TypeScript resolves overloads in the order they were declared.
+
+We can create function with its own properties.
+
+```Typescript
+type WarnUser  = {
+  (warning: string): void;
+  wasCalled: boolean; // function will have this property
+}
+```
+
+## Polymorphism
+
+> You can declare as many comma-separated generic type parameters as you want between a pair of angle brackets.
+
+```Typescript
+// shorthand generic function call signature
+type Filter = <T>(arr: T[], pred: (item: T) => boolean) => T[];
+
+type Filter<T> = (arr: T[], pred: (item: T) => boolean) => T[];
+
+// Full call signature
+type Filter = {
+  <T>(array: T[], f: (item: T) => boolean): T[]
+}
+
+// or
+
+type Filter = {
+  function <T>(array: T[], f: (item: T) => boolean): T[]
+}
+
+// or we could attach the generic type to the type alias
+type Filter<T> = {
+  (array: T[], f: (item: T) => boolean): T[]
+}
+
+```
+
+> Generally, TypeScript will bind concrete types to your generic when you use the generic: for functions, it’s when you call them; for classes, it’s when you instantiate them and for type aliases and interfaces, it’s when you use or implement them.
+
+```Typescript
+function filter<T>(arr: T[], pred: (item: T) => boolean): T[] {
+  // function implementation
+}
+```
