@@ -189,6 +189,29 @@ type CatAndDog = Cat & Dog;
 
 **NOTE**- When `unknown` is part of a union type, the result of the union will be `unknown`.
 
+> An intersection type lets you combine multiple types into one. The structure of an object that has an intersection type has to **have the structure of all the types that form the intersection types**. It’s denoted by an & sign. All members of all the types are required in the object of an intersection type. - [Intersection type](https://levelup.gitconnected.com/typescript-advanced-types-union-and-intersection-types-9283046d7859)
+
+- Intersection type can be used to extend type aliases.
+
+```Typescript
+type Pizza = {
+  base: string;
+}
+
+// CheesyPizza should have both base and cheesy set to true
+type CheesyPizza = Pizza & {
+  cheesy: boolean;
+}
+
+let myPizza: CheesyPizza = {
+  base: "wheat",
+  cheesy: true
+}
+```
+
+> Union types create a new type that lets us create objects that have some or all of the properties of each type that created the union type. Union types are created by joining multiples with the pipe | symbol.
+> If we have a union type, then we can only access members that are available in all the types that form the union type. - [Union types](https://levelup.gitconnected.com/typescript-advanced-types-union-and-intersection-types-9283046d7859)
+
 ## Arrays
 
 - In typescript we can express arrays as `T[]` or `Array<T>`.
