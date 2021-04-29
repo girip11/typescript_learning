@@ -157,4 +157,4 @@ let person = {
   [someSymbol]: 'John Doe'
 };
 // this will always return false
-console.log(someSymbol === someOtherSymbol);
+// console.log(someSymbol === someOtherSymbol);
