@@ -86,7 +86,7 @@ function add(a: number, b: number): number {
 add(1, 2) // normal invocation
 add.apply(null, [1, 2]) // apply spreads the args to add function
 add.call(null, 1, 2) // applies the args in order
-add.bing(null, 1, 2)() // bind returns a function with fixed arguments that can be called
+add.bind(null, 1, 2)() // bind returns a function with fixed arguments that can be called
 ```
 
 - `apply` accepts an array and spreads the array to the function as arguments.
@@ -114,6 +114,25 @@ fancyDate.call(new Date);
 fancyDate()
 ```
 
+## Nesting functions and closures
+
+- A function can be nested inside another function.
+- The inner function has access to the parameters of the enclosing function.
+- Outer function can return the inner function as its value.
+- Inner function encloses the parameters and variables of the enclosing function in its scope as long as the inner function object is alive (closure).
+
+```Typescript
+function outer(n: number): (arg: string) => string {
+  function inner(a: string): string {
+    return `${a}- ${n}`
+  }
+
+  return inner
+}
+
+console.log(outer(42)("John"))
+```
+
 ## Generator functions
 
 - Conceptually same as generators in python.
@@ -135,6 +154,11 @@ function* fibonacciGenerator(n: number): IterableIterator<number> {
 let fibGen = fibonacciGenerator(100);
 for (let i = 0; i < 10; i++) {
   console.log(fibGen.next());
+}
+
+// Using generator directly in the `for..of` loop
+for (let i of fibonacciGenerator(10)) {
+  console.log(i);
 }
 ```
 
@@ -167,7 +191,7 @@ for (let i of simpleIterable) {
 }
 ```
 
-- Iterator - Any object that defines a method called `next` returns an object with the properties value and done
+- Iterator - Any object that defines a method called `next` returns an object with the properties `value` and `done`
 
 ```Typescript
 // spread iterable

@@ -1,4 +1,4 @@
-# Namespaces
+# Modules and Namespaces
 
 - Loading and running JS blocks the browser's UI. But we can make the JS load dynamically after the page loaded.
 
@@ -50,6 +50,21 @@ Module paths used are the filenames.
 import * from `./some_module
 ```
 
+- Import the module itself(give wildcard a name)
+
+```Typescript
+// wildcard import. relative module path
+import * as some_module from `./some_module
+
+some_module.callAMethod();
+```
+
+- Import the module for side effects only
+
+```Typescript
+import "./some_module"
+```
+
 Default exports is supported. (no need to enclose the member inside `{}` when importing)
 
 ```Typescript
@@ -64,7 +79,7 @@ Importing non default members from a module
 import { nondefaultExportedMember } from './some_module';
 ```
 
-We can also reexport imported members.
+We can also **reexport** imported members.
 
 ```Typescript
 export { nonDefaultMember } from './some_module1';

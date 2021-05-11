@@ -34,6 +34,7 @@ for (let ch of text) {
 ```Typescript
 let arr = [10, 20, 30, 40];
 for (let i in arr) {
-  console.log(i);
+  // here i contains the index values starting from 0
+  console.log(arr[i]);
 }
 ```

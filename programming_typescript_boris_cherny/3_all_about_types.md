@@ -139,14 +139,66 @@ let a: {
   b: number;
   // optional property
   c?: string;
+} = {z: "abc", b: 1};
+```
+
+- [Index signatures](https://basarat.gitbook.io/typescript/type-system/index-signatures) - can be very useful to store different properties but all of same type.
+
+```Typescript
+// object with optional property as well as scope for adding new properties
+let a: {
   // the below signature is called as index signature
   [key: number]: boolean;
-} = {z: "abc", b: 1, 10: true, 20: false};
+} = {10: true, 20: false};
 ```
 
 > Index signatures - There is one rule to keep in mind for index signatures: the index signature key’s type (T) must be assignable to either number or string. Syntax `[keyName: keyType(number | string)]: ValueType`.
-> Object literal notation has one special case: empty object types `{}`. Every type—except null and undefined—is assignable to an empty object type, which can make it tricky to use. Try to avoid empty object types when possible
+> Object literal notation has one special case: empty object types `{}`. Every type—except `null` and `undefined` — is assignable to an empty object type, which can make it tricky to use. Try to avoid empty object types when possible
 > Avoid typing something as `:Object`.
+
+**NOTE**: If you pass any other object(except `number` type objects) to the index signature the JavaScript runtime actually calls `.toString` on it before getting the result. But When we code in typescript, we can only use `string` or `number` as the index type. If we have any other object, we should call toString on that object and use that value as the index.
+
+```Javascript
+// This is a JS snippet
+let obj = {
+  toString(){
+    console.log('toString called')
+    return 'Hello'
+  }
+}
+
+let foo = {};
+// IN JS toString called automatically
+// IN TS below statement raises error.
+// foo[obj.toString()] = 'World'; // works in Typescript
+foo[obj] = 'World'; // toString called implicitly by JS
+console.log(foo[obj]); // toString called, World
+console.log(foo['Hello']); // World
+```
+
+- As soon as you have a `string` index signature, all explicit members must also conform to that index signature.
+
+```Typescript
+// This snippet is to demonstrate index signature with other properties
+// Drawback with below snippet is even is you mistype `id` to `di`
+// typecheck will succeed, but when we try it, it could be undefined.
+type Student = {
+  name: string;
+  id?: string;
+  [key: string]: string | undefined;
+}
+
+function printStudent(stud: Student): void {
+  console.log(stud.id)
+}
+
+let stud: Student = {
+  name: "John",
+  di: "123",
+}
+
+printStudent(stud);
+```
 
 ## Type aliases
 
@@ -209,8 +261,27 @@ let myPizza: CheesyPizza = {
 }
 ```
 
-> Union types create a new type that lets us create objects that have some or all of the properties of each type that created the union type. Union types are created by joining multiples with the pipe | symbol.
+> Union types create a new type that lets us create objects that have some or all of the properties of each type that created the union type. Union types are created by joining multiple types with the pipe `|` symbol.
 > If we have a union type, then we can only access members that are available in all the types that form the union type. - [Union types](https://levelup.gitconnected.com/typescript-advanced-types-union-and-intersection-types-9283046d7859)
+
+An instance of the union type should have atleast all the properties from one of the types in the union. For example, with the `Cat | Dog`, the instance should have atleast all the properties from `Cat` or `Dog` or both. We cannot have partial properties from both the classes. Atleast one type in the union should have all its properties present in the instance.
+
+```Typescript
+// This is valid because it has all the properties of a Cat and
+// additional properties from the union types.
+let catOrDog: CatOrDogOrBoth = {
+  name: "Cat",
+  purrs: true,
+  wags: true
+}
+
+// This is not valid because it does not contain all the properties
+// from atleast one of the types in the union.
+let catOrDogInvalid: CatOrDogOrBoth = {
+  name: "Cat",
+  wags: true
+}
+```
 
 ## Arrays
 
@@ -308,9 +379,7 @@ console.log(Language["Spanish"]);
 
 - We can assign string values as well as mix string and numbers.
 
-- We can get the enum using its value in the square brackets. But to raise error when a value that's not assigned to any member, we need to declare the enum as `const`.
-
-**NOTE**: Constant enums can only be accessed via string keys(string literals).
+- We can get the enum using its numerical value in the square brackets. But to raise error when a value that's not assigned to any member, we need to declare the enum as `const`.
 
 ```Typescript
 const enum Language {
@@ -321,6 +390,24 @@ const enum Language {
 // This should not compiler. To ensure error is raised,
 // we need to make the enum Language const
 console.log(Language[3]); // This will raise error
+```
+
+**NOTE**: Constant enums can only be accessed via string keys(string literals).
+
+```Typescript
+const enum Language {
+  English = "Eng",
+  Tamil = "Tam",
+  Russian = "Rus"
+};
+
+// We can only access using the key in both dot notation as well as
+// square brackets
+console.log(Language["Tamil"]);
+console.log(Language.English);
+
+//unlike numerical enums we cannot use values in the square brackets
+console.log(Language["Rus"]); // Error
 ```
 
 **NOTE**: Typescript inlines the enum member’s value wherever it’s
