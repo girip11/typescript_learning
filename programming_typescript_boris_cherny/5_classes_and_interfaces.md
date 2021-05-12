@@ -41,7 +41,7 @@ john.sayHello(jane);
 
 ```Typescript
 class ConsoleLogger {
-  // we can make a statis member private as well
+  // we can make a static member private as well
   static printToConsole(msg: string): void {
     console.log(msg);
   }
@@ -49,6 +49,10 @@ class ConsoleLogger {
 
 ConsoleLogger.printToConsole("Hello");
 ```
+
+## Instance method overloading
+
+- Typescript does not support method overloading. Instead of overloading methods with different signatures, we can use type union, defaut arguments and optional arguments to achieve the same effect.
 
 ## Inheritance
 
@@ -101,11 +105,60 @@ class SomeClass {
 }
 ```
 
+## Symbols as member names
+
+```Typescript
+const getClassNameSymbol: unique symbol = Symbol();
+
+class C {
+  [getClassNameSymbol]() {
+    return "C";
+  }
+}
+
+let c = new C();
+let className = c[getClassNameSymbol](); // "C"
+```
+
+## `readonly` modifier and immutability
+
+- In a class or an interface, `readonly` modifier functions like a `const`. This fixes the reference variable to the object mapping. We cannot assign a new object to that variable. But we can change the state of the object.
+
+- Notice from the below script, `readonly` members can also be initialized in the constructor.
+
+```Typescript
+class Container {
+  readonly items: string[];
+
+  constructor(items: string[]) {
+    this.items = ([] as string[]).concat(items)
+  }
+}
+
+// This works
+let c = new Container(["a"]);
+c.items[0] = "b";
+console.log(c.items[0]);
+```
+
+- In the above example, we can alter the contents of the array while we cannot assign a new array. But if we want the array also to be immutable, then we need to declare that array as `readonly string[]`.
+
+```Typescript
+class Container {
+  // this will make the object immutable as well as the reference variable
+  readonly items: readonly string[];
+
+  constructor(items: string[]) {
+    this.items = ([] as string[]).concat(items)
+  }
+}
+```
+
 ## Interfaces
 
 - Interfaces are similar to type aliases. But type aliases are extended using union and intersection, while interfaces are extended by classes, other interfaces.
 
-- Interaface can extend another interface, object type, or a class
+- Interface can extend another interface, object type, or a class
 
 ```Typescript
 interface Food {
@@ -149,16 +202,23 @@ interface User {
 ```Typescript
 interface Animal {
   // properties in the interface are always public
-  // we cannot have other access modifiers
+  // we cannot have other access modifiers on interface members
   readonly name: string // interface can declare properties
   eat(food: string): void
   sleep(hours: number): void
 }
 
 class Cat implements Animal {
+
+  // This is a shorthand notation for declaring interface members
+  // within the constructor signature itself.
   constructor(
     public readonly name: string
   ) {}
+
+  // This is a more verbose way of doing the same thing.
+  // public readonly name: string
+  // constructor(name: string) {this.name = name;}
 
   eat(food: string) {
     console.info('Ate some', food, '. Mmm!')
@@ -173,11 +233,13 @@ class Cat implements Animal {
 
 > Interfaces do not emit JavaScript code, and only exist at compile time.
 
-- Interfaces cannot have default implementations while abstract classes can provide default implementations.
+- Interfaces **cannot have default implementations** while abstract classes can provide default implementations.
+
+- Incase we don't want to implement few methods of the interface, we can either make the class itself `abstract` with those members as `abstract` too or raise `Error("NotImplemented")` from those method.
 
 ## Classes are structurally typed
 
-- This is also known as duck typing.
+- This is also known as **duck typing**.
 
 > A class is compatible with any other type that shares its shape.
 
@@ -305,9 +367,10 @@ class APIPayload {
 
 **NOTE** - `final` in Java - makes class nonextensible and a method nonoverridable.
 
-- When constructors are marked private, we cannot instantiate the class with `new` or extend the class.
+- When constructors are marked `private` in typescript, we cannot instantiate the class with `new` or extend the class.
+- We cannot extend because, the derived class is expected to call the `super` in its constructor, but since the parent class constructor is private, this wont be possible.
 
--Such classes then require static methods to instantiate them(since new is also prohibited).
+-Such classes then require static methods to instantiate them(since `new` is also prohibited).
 
 ```Typescript
 class MessageQueue {

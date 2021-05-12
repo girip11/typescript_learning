@@ -68,7 +68,7 @@ let c: 100n = 100n;
 
 - `string` - String data type.
 
-### `symbol`
+### [`Symbol`](https://www.typescriptlang.org/docs/handbook/symbols.html)
 
 - `Symbol` - Every symbol is immutable and unique. A unique symbol is only equal to itself.
 
@@ -198,6 +198,47 @@ let stud: Student = {
 }
 
 printStudent(stud);
+```
+
+## Using symbols in index signatures
+
+- A symbol(both well known like `Symbol.iterator` or user defined) can be defined as key in the object. But the symbol should be placed inside `[]`.
+
+```Typescript
+const getNameSymbol: unique symbol = Symbol();
+
+type SymbolIndex = {
+  [key: string]: string
+}
+
+let someObj: SymbolIndex = {
+  [getNameSymbol]: "C"
+}
+```
+
+**NOTE**- We could be able to use the `Symbol` as a key type inaddition to the currently allowed `string | number` from typescript 4.3 and above. Refer the [pull request](https://github.com/microsoft/TypeScript/pull/26797). With this change, we should be able to define index signatures like this.
+
+```Typescript
+type SymbolIndex = {
+  [key: symbol | string]: string
+}
+
+let someObj: SymbolIndex = {
+  getNameSymbol: "C"
+}
+```
+
+## [Type casting](https://www.typescripttutorial.net/typescript-tutorial/type-casting/)
+
+- We could use `as` keyword or `<>` notation.
+
+```Typescript
+function getSomeValue(input: unknown): string {
+  let value: string = input as string;
+  return value;
+}
+
+console.log(getSomeValue("Hello"));
 ```
 
 ## Type aliases
