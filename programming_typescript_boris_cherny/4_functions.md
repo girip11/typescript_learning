@@ -331,3 +331,9 @@ function filter<T>(arr: T[], pred: (item: T) => boolean): T[] {
   // function implementation
 }
 ```
+
+---
+
+## References
+
+- [Programming TypeScript](https://www.oreilly.com/library/view/programming-typescript/9781492037644/)

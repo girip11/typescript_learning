@@ -381,3 +381,9 @@ class MessageQueue {
   }
 }
 ```
+
+---
+
+## References
+
+- [Programming TypeScript](https://www.oreilly.com/library/view/programming-typescript/9781492037644/)

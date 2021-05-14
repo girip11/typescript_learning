@@ -145,3 +145,9 @@ import d = A.B.C.d;
 - Always use `"moduleResolution": "node"` in the tsconfig.json
 
 > Modules prefixed with a `.`, `/`, or `~` (like `./my/file`) are resolved from the local filesystem, either **relative to the current file**, or using an absolute path (relative to your / directory, or whatever your tsconfig.json’s baseUrl is set to), depending on the prefix you use. **TypeScript loads module paths that don’t have a prefix from your node modules folder, the same as NodeJS**.
+
+---
+
+## References
+
+- [Programming TypeScript](https://www.oreilly.com/library/view/programming-typescript/9781492037644/)

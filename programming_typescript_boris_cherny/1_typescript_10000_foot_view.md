@@ -18,3 +18,9 @@
 - Typescript compiler is like **Scala compiler**, in that the compiler can infer types from the definitions(variable types, function return types etc)
 
 > In general, it is good style to let TypeScript infer as many types as it can for you, keeping explicitly typed code to a minimum.
+
+---
+
+## References
+
+- [Programming TypeScript](https://www.oreilly.com/library/view/programming-typescript/9781492037644/)

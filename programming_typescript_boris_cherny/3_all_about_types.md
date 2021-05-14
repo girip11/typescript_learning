@@ -460,3 +460,9 @@ used. To avoid this set the `preserveConstEnums` compiler option to true.
 
 - Stay away from enum due to its type issues.
 - Avoid numeric valued enums and non const enums.
+
+---
+
+## References
+
+- [Programming TypeScript](https://www.oreilly.com/library/view/programming-typescript/9781492037644/)

@@ -60,3 +60,9 @@ function divide(num: number, den: number): number | ZeroDivisionError {
 - Better alternative compared to union types with Error when chaining operations.
 - Similar to Scala, in typescript, we can use external libraries from NPM that provides `Option`, `Try` and `Either`.
 - Option -> A container/collection with atmost 1 element. So we either return a empty array or an array with a single element. Try using [fp-ts](https://github.com/gcanti/fp-ts)
+
+---
+
+## References
+
+- [Programming TypeScript](https://www.oreilly.com/library/view/programming-typescript/9781492037644/)
